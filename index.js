@@ -38,12 +38,26 @@ client.connect(err =>{
     })
   });
 
+  app.get('/myorders', async(req,res) =>{
+    const orders = await orderCollection.find({}).toArray();
+    res.send(orders);
+  });
+
+  // delete my orders 
+  app.delete('/myorders/:id', async(req,res) =>{
+    const id = req.params.id;
+    const query = {_id:id};
+    const result = await orderCollection.deleteOne(query);
+    res.send(result);
+  })
+
   // get my orders
   app.get("/mybooking/:email",async (req,res) =>{
     console.log(req.params.email);
     const result = await orderCollection.find({email: req.params.email}).toArray();
     console.log(result);
-  })
+  });
+
 
 
  app.get('/', (req, res) => {
